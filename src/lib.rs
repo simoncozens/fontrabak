@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use babelfont::{DesignLocation, UserLocation};
+use babelfont::DesignLocation;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use serde_wasm_bindgen::Serializer;
@@ -177,12 +177,14 @@ impl Font {
     pub fn getAxes(&self) -> Result<JsValue, serde_wasm_bindgen::Error> {
         let mut axes = FontraAxes::default();
         for axis in self.0.axes.iter() {
+            /*
             let name = axis
                 .name
                 .get_default()
                 .map(|s| s.as_str())
                 .unwrap_or("Unknown axis")
                 .to_string();
+            */
             axes.axes.push(FontraAxis {
                 name: axis.tag.to_string(), // XXX: This should be the name, but for expediency
                 label: "".to_string(),
