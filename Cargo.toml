@@ -10,7 +10,7 @@ wasm-bindgen = { version = "0.2.63" }
 console_error_panic_hook = { version = "0.1.6" }
 js-sys = { version = "0.3.68" }
 serde_json = { version = "1.0.68" }
-babelfont = { path = "../rust-font-tools/babelfont-rs", features=["glyphs"], default-features=false }
+babelfont = { git= "https://github.com/simoncozens/rust-font-tools", features=["glyphs"], default-features=false }
 [lib]
 crate-type = ["cdylib", "rlib"]
 path = "src/lib.rs"
