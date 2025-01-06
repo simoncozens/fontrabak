@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 use babelfont::{DesignLocation, UserLocation};
 use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use serde_wasm_bindgen::Serializer;
 use std::collections::HashMap;
 
@@ -60,7 +61,7 @@ struct FontraSource {
 #[derive(Serialize, Deserialize, Default)]
 struct FontraBackendInfo {
     features: Vec<String>,
-    projectManagerFeatures: Vec<String>,
+    projectManagerFeatures: Value,
 }
 
 #[derive(Serialize, Deserialize, Default)]
@@ -233,8 +234,14 @@ impl Font {
         serialize_json_compatible(&false)
     }
 
-    pub fn getBackendInfo(&self) -> JsValue {
-        serialize_json_compatible(&FontraBackendInfo::default()).unwrap()
+    pub fn getBackEndInfo(&self) -> JsValue {
+        let info = FontraBackendInfo {
+            features: vec![],
+            projectManagerFeatures: json!({
+                "export-as": ["glyphs"]
+            }),
+        };
+        serialize_json_compatible(&info).unwrap()
     }
 
     pub fn getCustomData(&self) -> JsValue {
