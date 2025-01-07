@@ -158,9 +158,18 @@ pub struct Font(babelfont::Font);
 #[wasm_bindgen]
 impl Font {
     #[wasm_bindgen(constructor)]
-    pub fn new(font_a: &str) -> Result<Font, JsValue> {
-        let font = babelfont::convertors::glyphs3::load_str(font_a, "".into())
-            .map_err(|e| JsValue::from_str(&format!("Error loading font: {:?}", e)))?;
+    pub fn new(font_a: &JsValue) -> Result<Font, JsValue> {
+        let font = if font_a.is_falsy() {
+            babelfont::Font::new()
+        } else {
+            babelfont::convertors::glyphs3::load_str(
+                &font_a
+                    .as_string()
+                    .ok_or(JsValue::from_str("Font must be a string or null"))?,
+                "".into(),
+            )
+            .map_err(|e| JsValue::from_str(&format!("Error loading font: {:?}", e)))?
+        };
         Ok(Font(font))
     }
 
